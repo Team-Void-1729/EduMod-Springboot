@@ -71,4 +71,15 @@ public class curriculum {
 	public void setEducator(educator edu) {
 		this.edu = edu;
 	}
+	
+	@Override
+    public String toString() {
+        return "Curriculum{" +
+                "id=" + curid +
+                ", branch='" + branch + '\'' +
+                ", sem=" + sem +
+                ", status='" + status + '\'' +
+                ", educator='" + edu + '\'' +
+                '}';
+    }
 }
