@@ -39,8 +39,8 @@ public class educator {
 	@Column(columnDefinition = "boolean default false")
     private boolean verified;
 
-	@OneToMany(mappedBy = "edu", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = course.class)
-	private List<course> courses;
+//	@OneToMany(mappedBy = "edu", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = course.class)
+//	private List<course> courses;
 	
 	@Column(nullable = true)
 	@Enumerated(value = EnumType.STRING)
@@ -61,12 +61,12 @@ public class educator {
 		this.eduid = eduid;
 	}
 
-	public List<course> getCourses() {
-		return courses;
-	}
-	public void setCourses(List<course> courses) {
-		this.courses = courses;
-	}
+//	public List<course> getCourses() {
+//		return courses;
+//	}
+//	public void setCourses(List<course> courses) {
+//		this.courses = courses;
+//	}
 	
 	public String getName() {
 		return name;

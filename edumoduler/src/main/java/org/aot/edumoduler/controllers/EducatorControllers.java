@@ -17,8 +17,8 @@ public class EducatorControllers {
 	@Autowired
 	private EducatorRepository educatorRepository;
 	
-	@Autowired
-	private CourseRepository courseRepository;
+//	@Autowired
+//	private CourseRepository courseRepository;
 	
 	
     @PostMapping("/add") 
