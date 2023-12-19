@@ -1,6 +1,6 @@
 package org.aot.edumoduler.controllers;
 import java.util.Optional;
-
+import org.springframework.http.ResponseEntity;
 import org.aot.edumoduler.models.*;
 import org.aot.edumoduler.repos.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,23 +19,19 @@ import org.springframework.http.ResponseEntity;
 public class CourseControllers {
 
 	@Autowired
-	private CourseRepository courseRepository;
-	
-	@Autowired
-	private EducatorRepository EducatorRepository;
+	CourseRepository cou;
 	
 	
 	@PostMapping("/add") 
     public course addCourse(@RequestBody course x) 
     { 
-		course crs = courseRepository.save(x);
-        return crs;   
+        return cou.save(x);   
     } 
     
     @GetMapping("/details/{id}")
 	public Optional<course> viewCourse(@PathVariable String id)
 	{
-		return courseRepository.findById(id);
+		return cou.findById(id);
 	}
     
 	@PutMapping("/update/{id}")
@@ -44,7 +40,7 @@ public class CourseControllers {
     {
     	// fetch by id
     	
-    	Optional<course> course = courseRepository.findById(id);
+    	Optional<course> course = cou.findById(id);
         if (course.isPresent()) {
             course c = course.get();
             c.setCourseid(co.getCourseid());
@@ -56,7 +52,7 @@ public class CourseControllers {
             c.setSem(co.getSem());
             c.setTime(co.getTime());
             c.setEdu(co.getEdu());
-            course updatedCourse = courseRepository.save(c);
+            course updatedCourse = cou.save(c);
             return ResponseEntity.ok(updatedCourse);
         } else {
             return ResponseEntity.notFound().build();
@@ -66,9 +62,9 @@ public class CourseControllers {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteCourse(@PathVariable String id)
     {
-        Optional<course> course = courseRepository.findById(id);
+        Optional<course> course = cou.findById(id);
         if (course.isPresent()) {
-        	courseRepository.deleteById(id);
+        	cou.deleteById(id);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
