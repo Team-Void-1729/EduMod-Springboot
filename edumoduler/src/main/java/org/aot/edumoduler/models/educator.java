@@ -60,13 +60,6 @@ public class educator {
 	public void setEduid(String eduid) {
 		this.eduid = eduid;
 	}
-
-//	public List<course> getCourses() {
-//		return courses;
-//	}
-//	public void setCourses(List<course> courses) {
-//		this.courses = courses;
-//	}
 	
 	public String getName() {
 		return name;
