@@ -15,7 +15,11 @@ public class meeting {
 	@Id
     @GeneratedValue(strategy = GenerationType.UUID)
 	private String meetingid;
+	
+	@Column(nullable = false)
 	private String name;
+	
+	@Column(nullable = false)
 	private String timestamp;
 	
 	public String getMeetingid() {
