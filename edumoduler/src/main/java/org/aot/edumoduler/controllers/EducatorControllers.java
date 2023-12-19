@@ -33,11 +33,6 @@ public class EducatorControllers {
 	{
 		return educatorRepository.findByEmail(email);
 	}
-	
-	@Autowired
-    public EducatorControllers(EducatorRepository educatorRepository) {
-        this.educatorRepository = educatorRepository;
-    }
     
 	@PutMapping("/update/{id}")
     //Method
