@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,6 +22,18 @@ public class AssessmentControllers {
 	@Autowired
 	private AssessmentRepository assessmentRepository;
 	
+	@PostMapping("/create")
+    public ResponseEntity<String> createAssessment( @RequestParam("id") String assid,@RequestParam("type") String type,@RequestParam("marks") int marks,@RequestParam("name") String name) {
+		
+        // Create an Assessment object with the provided data
+        assessment ass = new assessment();
+        ass.setAssid(assid);
+        ass.setType(type);
+        ass.setMarks(marks);
+        ass.setName(name);
+        
+        return ResponseEntity.ok("Assessment created: " + ass);
+    }
 	
 	@PostMapping("/add") 			//add assessments
     public assessment addAssessment(@RequestBody assessment x) 
