@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
   
 @RestController
 @RequestMapping("/courses")
@@ -21,6 +22,22 @@ public class CourseControllers {
 	@Autowired
 	CourseRepository cou;
 	
+	@PostMapping("/create")
+    public ResponseEntity<String> createCourse( @RequestParam("id") String courseid,@RequestParam("type") String type,@RequestParam("title") String title,@RequestParam("code") String code,@RequestParam("credits") int credits,@RequestParam("stream") String stream,@RequestParam("sem") String sem,@RequestParam("time") int time) {
+		
+        // Create a Course object with the provided data
+        course co = new course();
+        co.setCourseid(courseid);
+        co.setType(type);
+        co.setTitle(title);
+        co.setCode(code);
+        co.setCredits(credits);
+        co.setStream(stream);
+        co.setSem(sem);
+        co.setTime(time);
+        
+        return ResponseEntity.ok("Course created: " + co);
+    }
 	
 	@PostMapping("/add") 
     public course addCourse(@RequestBody course x) 

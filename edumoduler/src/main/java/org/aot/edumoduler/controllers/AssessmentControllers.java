@@ -58,5 +58,4 @@ public class AssessmentControllers {
             return ResponseEntity.notFound().build();
         }
     }
-    
 }

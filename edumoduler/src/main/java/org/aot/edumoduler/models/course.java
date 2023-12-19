@@ -107,4 +107,19 @@ public class course {
 	public void setEdu(educator edu) {
 		this.edu = edu;
 	}
+	
+	@Override
+    public String toString() {
+        return "Course{" +
+                "id=" + courseid +
+                ", type='" + type + '\'' +
+                ", title=" + title +
+                ", code='" + code + '\'' +
+                ", credits='" + credits + '\'' +
+                ", stream='" + stream + '\'' +
+                ", sem='" + sem + '\'' +
+                ", time='" + time + '\'' +
+                ", educator='" + edu + '\'' +
+                '}';
+    }
 }
