@@ -8,9 +8,8 @@ import java.util.Optional;
 
 import org.aot.edumoduler.models.*;
 
-
+ 
 @Repository
- public interface EducatorRepository extends JpaRepository<educator, String> {
-	Optional<educator> findByEmail(String email);
-	Optional<educator> findById(String id);
+public interface AssessmentRepository extends JpaRepository<assessment, String> {
+	Optional<assessment> findById(String id);
 }

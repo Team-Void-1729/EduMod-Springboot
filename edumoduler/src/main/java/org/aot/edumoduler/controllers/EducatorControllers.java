@@ -6,7 +6,6 @@ import org.aot.edumoduler.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -16,9 +15,6 @@ public class EducatorControllers {
 	
 	@Autowired
 	private EducatorRepository educatorRepository;
-	
-	@Autowired
-	private CourseRepository courseRepository;
 	
 	
     @PostMapping("/add") 
@@ -44,7 +40,7 @@ public class EducatorControllers {
         this.educatorRepository = educatorRepository;
     }
     
-	/*@PutMapping("/update/{id}")
+	@PutMapping("/update/{id}")
     //Method
     public ResponseEntity<educator> updateEducators(@RequestParam String id, @RequestBody educator e)
     {
@@ -54,7 +50,6 @@ public class EducatorControllers {
         if (educator.isPresent()) {
             educator edu = educator.get();
             edu.setEduid(e.getEduid());
-            edu.setCourses(e.getCourses());
             edu.setName(e.getName());
             edu.setCollege(e.getCollege());    
             edu.setEmail(e.getEmail());
@@ -68,7 +63,7 @@ public class EducatorControllers {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }*/
+    }
     
  // Update default value of 'verified'
     @PutMapping("/update/{newValue}")
