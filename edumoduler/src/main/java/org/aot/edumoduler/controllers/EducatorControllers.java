@@ -18,9 +18,9 @@ public class EducatorControllers {
 	
 	
     @PostMapping("/add") 
-    public educator addEducator(@RequestBody educator x)
+    public educator addEducator(@RequestBody educator edu)
     { 
-        return educatorRepository.save(x);
+        return educatorRepository.save(edu);
     }
     
     @GetMapping("/profile/{id}")
@@ -34,19 +34,12 @@ public class EducatorControllers {
 	{
 		return educatorRepository.findByEmail(email);
 	}
-	
-	@Autowired
-    public EducatorControllers(EducatorRepository educatorRepository) {
-        this.educatorRepository = educatorRepository;
-    }
     
 	@PutMapping("/update/{id}")
-    //Method
     public ResponseEntity<educator> updateEducators(@RequestParam String id, @RequestBody educator e)
-    {
-    	// fetch by id
-    	
+    {    	
     	Optional<educator> educator = educatorRepository.findById(id);
+    	
         if (educator.isPresent()) {
             educator edu = educator.get();
             edu.setEduid(e.getEduid());

@@ -48,7 +48,6 @@ public class educator {
 	
 	public educator() {}
 	public enum EducatorRole {
-		
 	    ADMIN,
 	    USER
 	}
