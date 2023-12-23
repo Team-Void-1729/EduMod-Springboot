@@ -2,12 +2,9 @@ package org.aot.edumoduler.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 
 @Entity
@@ -35,12 +32,13 @@ public class course {
 	private String sem;
 	
 	@Column(nullable = false)
-	private int time;
+	private int L;
 	
+	@Column(nullable = false)
+	private int T;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "edu_id", referencedColumnName = "eduid")
-	private educator edu;	
+	@Column(nullable = false)
+	private int P;
 
 	public course() {}
 
@@ -93,33 +91,25 @@ public class course {
 	public void setSem(String sem) {
 		this.sem = sem;
 	}
+
+	public int getL() {
+		return L;
+	}
+	public void setL(int l) {
+		L = l;
+	}
+
+	public int getT() {
+		return T;
+	}
+	public void setT(int t) {
+		T = t;
+	}
 	
-	public int getTime() {
-		return time;
+	public int getP() {
+		return P;
 	}
-	public void setTime(int time) {
-		this.time = time;
+	public void setP(int p) {
+		P = p;
 	}
-		
-	public educator getEdu() {
-		return edu;
-	}
-	public void setEdu(educator edu) {
-		this.edu = edu;
-	}
-	
-	@Override
-    public String toString() {
-        return "Course{" +
-                "id=" + courseid +
-                ", type='" + type + '\'' +
-                ", title=" + title +
-                ", code='" + code + '\'' +
-                ", credits='" + credits + '\'' +
-                ", stream='" + stream + '\'' +
-                ", sem='" + sem + '\'' +
-                ", time='" + time + '\'' +
-                ", educator='" + edu + '\'' +
-                '}';
-    }
 }

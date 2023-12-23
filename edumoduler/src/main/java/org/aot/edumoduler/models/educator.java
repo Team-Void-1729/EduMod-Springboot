@@ -1,16 +1,12 @@
 package org.aot.edumoduler.models;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import java.util.List;
 
 @Entity
 public class educator {
@@ -22,9 +18,9 @@ public class educator {
 	private String name;
 	
 	@Column(nullable = false)
-	private String college;
+	private String designation;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String email;
 	
 	@Column(nullable = false)
@@ -34,23 +30,23 @@ public class educator {
 	private int mobile;
 	
 	@Column(nullable = false)
-	private String about;
+	private String[] domain;
 	
-	@Column(columnDefinition = "boolean default false")
-    private boolean verified;
-
-//	@OneToMany(mappedBy = "edu", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = course.class)
-//	private List<course> courses;
+	@Column(nullable = false)
+	private int yearOfExpertise;
 	
 	@Column(nullable = true)
 	@Enumerated(value = EnumType.STRING)
 	private EducatorRole roles;
 	
-	public educator() {}
 	public enum EducatorRole {
-	    ADMIN,
-	    USER
+	    EDUCATOR,
+	    DEVELOPER,
+	    ADMINISTRATOR
 	}
+	
+	
+	public educator() {}
 	
 	
 	public String getEduid() {
@@ -59,63 +55,52 @@ public class educator {
 	public void setEduid(String eduid) {
 		this.eduid = eduid;
 	}
-	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public String getCollege() {
-		return college;
+	public String getDesignation() {
+		return designation;
 	}
-	public void setCollege(String college) {
-		this.college = college;
+	public void setDesignation(String designation) {
+		this.designation = designation;
 	}
-	
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 	public int getMobile() {
 		return mobile;
 	}
 	public void setMobile(int mobile) {
 		this.mobile = mobile;
 	}
-
-	public String getAbout() {
-		return about;
+	public String[] getDomain() {
+		return domain;
 	}
-	public void setAbout(String about) {
-		this.about = about;
+	public void setDomain(String[] domain) {
+		this.domain = domain;
 	}
-	
-	public boolean getVerified() {
-		return verified;
+	public int getYearOfExpertise() {
+		return yearOfExpertise;
 	}
-	public void setVerified(boolean verified) {
-		this.verified = verified;
+	public void setYearOfExpertise(int yearOfExpertise) {
+		this.yearOfExpertise = yearOfExpertise;
 	}
-	
 	public EducatorRole getRoles() {
 		return roles;
 	}
 	public void setRoles(EducatorRole roles) {
 		this.roles = roles;
 	}
-
-
-	
 }

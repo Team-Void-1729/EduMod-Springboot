@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 public class assessment {
 
 	@Id
-    //@GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
 	private String assid;
 	
 	@Column(nullable = false)

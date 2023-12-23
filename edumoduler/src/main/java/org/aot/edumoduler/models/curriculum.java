@@ -1,13 +1,15 @@
 package org.aot.edumoduler.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 
 @Entity
@@ -20,17 +22,67 @@ public class curriculum {
 	private String branch;
 	
 	@Column(nullable = false)
-	private String sem;
-	
+	private int sem;
+
 	@Column(nullable = false)
 	private String status;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "edu_id", referencedColumnName = "eduid")
-	private educator edu;	
+	
+	private String[] overview;
+	
+	private String[] reference;
+	
+	private String[] outcomes;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<course> courses = new ArrayList<course>();
+	
 	
 	public curriculum() {}
 	
+	
+	public List<course> getCourses() {
+		return courses;
+	}
+	public void setCourses(List<course> courses) {
+		this.courses = courses;
+	}
+
+
+	public String[] getOverview() {
+		return overview;
+	}
+
+
+	public void setOverview(String[] overview) {
+		this.overview = overview;
+	}
+
+
+	public String[] getReference() {
+		return reference;
+	}
+
+
+	public void setReference(String[] reference) {
+		this.reference = reference;
+	}
+
+	public String[] getOutcomes() {
+		return outcomes;
+	}
+
+
+	public void setOutcomes(String[] outcomes) {
+		this.outcomes = outcomes;
+	}
+	
+	public int getSem() {
+		return sem;
+	}
+
+	public void setSem(int sem) {
+		this.sem = sem;
+	}	
 	
 	public String getCurid() {
 		return curid;
@@ -48,14 +100,6 @@ public class curriculum {
 		this.branch = branch;
 	}
 
-	public String getSem() {
-		return sem;
-	}
-
-	public void setSemester(String sem) {
-		this.sem = sem;
-	}
-
 	public String getStatus() {
 		return status;
 	}
@@ -63,23 +107,4 @@ public class curriculum {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	public educator getEdu() {
-		return edu;
-	}
-
-	public void setEducator(educator edu) {
-		this.edu = edu;
-	}
-	
-	@Override
-    public String toString() {
-        return "Curriculum{" +
-                "id=" + curid +
-                ", branch='" + branch + '\'' +
-                ", sem=" + sem +
-                ", status='" + status + '\'' +
-                ", educator='" + edu + '\'' +
-                '}';
-    }
 }

@@ -2,27 +2,30 @@ package org.aot.edumoduler.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
+import java.util.Map;
 import java.util.Optional;
 
 import org.aot.edumoduler.models.*;
 import org.aot.edumoduler.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.ReflectionUtils;
 
 @RestController
 @RequestMapping("/curriculum")
 public class CurriculumControllers {
 	@Autowired
-	CurriculumRepository cur;
+	private CurriculumRepository curRepo;
 	
 	@PostMapping("/create")
-    public ResponseEntity<String> createCurriculum( @RequestParam("id") String curid,@RequestParam("branch") String branch,@RequestParam("sem") String sem,@RequestParam("status") String status) {
+    public ResponseEntity<Object> createCurriculum(@RequestBody curriculum curr) {
 		
-        // Create a Course object with the provided data
         curriculum curri = new curriculum();
-        curri.setCurid(curid);
-        curri.setBranch(branch);
-        curri.setSemester(sem);
-        curri.setStatus(status);
+        curri.setBranch(curr.getBranch());
+        curri.setSem(curr.getSem());
+        curri.setStatus(curr.getStatus());
+        
+        curRepo.save(curri);
         
         return ResponseEntity.ok("Curriculum created: " + curri);
     }
@@ -30,45 +33,43 @@ public class CurriculumControllers {
 	@PostMapping("/add") 
     public curriculum addCurriculum(@RequestBody curriculum x) 
     { 
-        return cur.save(x); 
+        return curRepo.save(x); 
     } 
     
     @GetMapping("/details/{id}")
 	public Optional<curriculum> viewCurriculums(@PathVariable String id)
 	{
-		return cur.findById(id);
+		return curRepo.findById(id);
 	}
     
 	@PutMapping("/update/{id}")
-    //Method
-    public ResponseEntity<curriculum> updateCurriculum(@PathVariable String id, @RequestBody curriculum c)
+    public ResponseEntity<curriculum> updateCurriculum(@PathVariable String id, @RequestBody Map<String, Object> fields)
     {
-    	// fetch by id
-    	
-    	Optional<curriculum> curriculum = cur.findById(id);
-        if (curriculum.isPresent()) {
-            curriculum curri = curriculum.get();
-            curri.setCurid(c.getCurid());
-            curri.setBranch(c.getBranch());
-            curri.setSemester(c.getSem());
-            curri.setStatus(c.getStatus());    /*Published or Unpublished*/
-            curri.setEducator(c.getEdu());
-            curriculum updatedCurriculum = cur.save(curri);
-            return ResponseEntity.ok(updatedCurriculum);
+    	curriculum curri = curRepo.findById(id).orElseGet(null);
+        if (curri != null) {
+        	fields.forEach((key, value)-> {
+        		Field field = ReflectionUtils.findRequiredField(curriculum.class, key);
+        		field.setAccessible(true);
+        		ReflectionUtils.setField(field, curri, value);
+        		
+        		curRepo.save(curri);
+        	});
+            return ResponseEntity.ok(curri);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
     
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> deleteCurriculum(@PathVariable String id)
+    public String deleteCurriculum(@PathVariable String id)
     {
-        Optional<curriculum> curriculum = cur.findById(id);
-        if (curriculum.isPresent()) {
-            cur.deleteById(id);
-            return ResponseEntity.noContent().build();
+        curriculum curr = curRepo.findById(id).orElseGet(null);
+        if (curr != null) {
+            curRepo.deleteById(id);
+            
+            return "Curriculum Deleted.";
         } else {
-            return ResponseEntity.notFound().build();
+        	return "Curriculum not Found.";
         }
     }
 }

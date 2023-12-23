@@ -1,18 +1,20 @@
 package org.aot.edumoduler.controllers;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import org.springframework.http.ResponseEntity;
 import org.aot.edumoduler.models.*;
 import org.aot.edumoduler.repos.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.ReflectionUtils;
 
   
 @RestController
@@ -20,71 +22,56 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CourseControllers {
 
 	@Autowired
-	CourseRepository cou;
+	CourseRepository courseRepository;
 	
-	@PostMapping("/create")
-    public ResponseEntity<String> createCourse( @RequestParam("id") String courseid,@RequestParam("type") String type,@RequestParam("title") String title,@RequestParam("code") String code,@RequestParam("credits") int credits,@RequestParam("stream") String stream,@RequestParam("sem") String sem,@RequestParam("time") int time) {
-		
-        // Create a Course object with the provided data
-        course co = new course();
-        co.setCourseid(courseid);
-        co.setType(type);
-        co.setTitle(title);
-        co.setCode(code);
-        co.setCredits(credits);
-        co.setStream(stream);
-        co.setSem(sem);
-        co.setTime(time);
-        
-        return ResponseEntity.ok("Course created: " + co);
-    }
-	
-	@PostMapping("/add") 
-    public course addCourse(@RequestBody course x) 
-    { 
-        return cou.save(x);   
-    } 
-    
-    @GetMapping("/details/{id}")
-	public Optional<course> viewCourse(@PathVariable String id)
+	@PostMapping("/add")
+    public course createCourse(@RequestBody course cou) {
+		return courseRepository.save(cou);
+	}
+
+	@GetMapping("/details")
+	public List<course> viewAllCourse()
 	{
-		return cou.findById(id);
+		return courseRepository.findAll();
 	}
     
-	@PutMapping("/update/{id}")
-    //Method
-    public ResponseEntity<course> updateCourses(@PathVariable String id, @RequestBody course co)
-    {
-    	// fetch by id
+    @GetMapping("/details/{title}")
+	public Optional<course> viewCourse(@PathVariable String title)
+	{
+		return courseRepository.findByTitle(title);
+	}
+    
+	@PatchMapping("/update/{id}")
+    public String updateCourses(@PathVariable String id, @RequestBody Map<String, Object> fields)
+    {    	
+    	course cou = courseRepository.findById(id).orElseGet(null);
     	
-    	Optional<course> course = cou.findById(id);
-        if (course.isPresent()) {
-            course c = course.get();
-            c.setCourseid(co.getCourseid());
-            c.setType(co.getType());
-            c.setTitle(co.getTitle());
-            c.setCode(co.getCode());    /*Published or Unpublished*/
-            c.setCredits(co.getCredits());
-            c.setStream(co.getStream());
-            c.setSem(co.getSem());
-            c.setTime(co.getTime());
-            c.setEdu(co.getEdu());
-            course updatedCourse = cou.save(c);
-            return ResponseEntity.ok(updatedCourse);
+        if (cou != null) {
+        	fields.forEach((key, value)-> {
+        		Field field = ReflectionUtils.findRequiredField(course.class, key);
+        		field.setAccessible(true);
+        		ReflectionUtils.setField(field, cou, value);
+        		
+        		courseRepository.save(cou);
+        	});
+            
+            return "Course Updated.";
         } else {
-            return ResponseEntity.notFound().build();
+            return "Course not Found";
         }
     }
     
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> deleteCourse(@PathVariable String id)
+    public String deleteCourse(@PathVariable String id)
     {
-        Optional<course> course = cou.findById(id);
-        if (course.isPresent()) {
-        	cou.deleteById(id);
-            return ResponseEntity.noContent().build();
+        course cou = courseRepository.findById(id).orElseGet(null);
+        
+        if (cou != null) {
+        	courseRepository.deleteById(id);
+        	
+            return "Course Deleted.";
         } else {
-            return ResponseEntity.notFound().build();
+        	return "Course not Found.";
         }
     }
 }

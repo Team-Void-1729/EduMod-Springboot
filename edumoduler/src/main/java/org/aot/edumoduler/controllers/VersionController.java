@@ -3,7 +3,8 @@ package org.aot.edumoduler.controllers;
 
 import org.aot.edumoduler.git.GSON;
 import org.aot.edumoduler.git.User;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,11 +14,13 @@ public class VersionController {
 	
 	GSON gson = new GSON();
 	
-	@GetMapping("/store")
-	public String storeVersion()
+	@PostMapping("/store")
+	public String storeVersion(@RequestBody User user)
 	{
-		User user = new User(3, "Tom", "European");
+		GSON gson = new GSON();
+		
 		gson.makeJsonFile(user);
-		return "File written...";
+		
+		return "File Written";	
 	}
 }
